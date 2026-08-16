@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign in — Fieldnotes{% endblock %}
+
+{% block content %}
+<section class="auth-panel">
+  <p class="eyebrow log-line">$ sudo login</p>
+  <h1 class="hero-title" style="font-size: 2rem;">Sign in</h1>
+  <form method="post" class="form-stack">
+    <label>
+      Username
+      <input type="text" name="username" autocomplete="username" required autofocus>
+    </label>
+    <label>
+      Password
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+  </form>
+  <p class="hint">Demo credentials: <code>admin</code> / <code>changeme123</code></p>
+</section>
+{% endblock %}

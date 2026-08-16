@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit post' if post else 'New post' }} — Fieldnotes{% endblock %}
+
+{% block content %}
+<section>
+  <p class="eyebrow log-line">$ {{ 'edit' if post else 'write' }} --post</p>
+  <h1 class="hero-title" style="font-size: 2rem;">{{ 'Edit post' if post else 'New post' }}</h1>
+
+  <form method="post" class="form-stack">
+    <label>
+      Title
+      <input type="text" name="title" value="{{ post.title if post else '' }}" required>
+    </label>
+
+    <label>
+      Excerpt <span class="field-hint">shown in the post list, max 280 characters</span>
+      <textarea name="excerpt" rows="2" maxlength="280">{{ post.excerpt if post else '' }}</textarea>
+    </label>
+
+    <label>
+      Tags <span class="field-hint">comma-separated, e.g. flask, python, notes</span>
+      <input type="text" name="tags" value="{{ post.tags if post else '' }}">
+    </label>
+
+    <label>
+      Body <span class="field-hint">Markdown supported — headings, lists, fenced code blocks</span>
+      <textarea name="body_md" rows="16" class="mono-area" required>{{ post.body_md if post else '' }}</textarea>
+    </label>
+
+    <label class="checkbox-row">
+      <input type="checkbox" name="published" {% if not post or post.published %}checked{% endif %}>
+      Published (visible on the public site)
+    </label>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">{{ 'Save changes' if post else 'Publish' }}</button>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

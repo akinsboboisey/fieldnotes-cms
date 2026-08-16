@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Fieldnotes{% endblock %}
+
+{% block content %}
+<section class="dash-head">
+  <div>
+    <p class="eyebrow log-line">$ admin --posts</p>
+    <h1 class="hero-title" style="font-size: 2rem;">Dashboard</h1>
+  </div>
+  <a href="{{ url_for('new_post') }}" class="btn btn-primary">New post</a>
+</section>
+
+<table class="post-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for post in posts %}
+      <tr>
+        <td><a href="{{ url_for('post_detail', slug=post.slug) }}">{{ post.title }}</a></td>
+        <td>
+          {% if post.published %}
+            <span class="status-chip status-live">live</span>
+          {% else %}
+            <span class="status-chip status-draft">draft</span>
+          {% endif %}
+        </td>
+        <td class="log-line">{{ post.created_at.strftime('%Y-%m-%d') }}</td>
+        <td class="row-actions">
+          <a href="{{ url_for('edit_post', post_id=post.id) }}">edit</a>
+          <form method="post" action="{{ url_for('delete_post', post_id=post.id) }}"
+                onsubmit="return confirm('Delete this post? This cannot be undone.');">
+            <button type="submit" class="link-btn">delete</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="4" class="empty-state">No posts yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

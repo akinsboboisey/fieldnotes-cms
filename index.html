@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Fieldnotes — a developer's notebook{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <p class="eyebrow log-line">$ cat ./about.md</p>
+  <h1 class="hero-title">Fieldnotes from building things.</h1>
+  <p class="hero-sub">Short, working notes on machine learning, Flask, and shipping software from wherever I happen to be.</p>
+</section>
+
+{% if active_tag %}
+  <p class="filter-note">Showing posts tagged <span class="tag-chip">#{{ active_tag }}</span> — <a href="{{ url_for('index') }}">clear</a></p>
+{% endif %}
+
+<section class="post-list">
+  {% for post in posts %}
+    <article class="post-card">
+      <div class="post-card-meta log-line">
+        posted {{ post.created_at.strftime('%Y-%m-%d') }} · {{ post.reading_minutes }} min read
+        {% if not post.published %}<span class="draft-flag">draft</span>{% endif %}
+      </div>
+      <h2 class="post-card-title">
+        <a href="{{ url_for('post_detail', slug=post.slug) }}">{{ post.title }}</a>
+      </h2>
+      <p class="post-card-excerpt">{{ post.excerpt }}</p>
+      {% if post.tag_list %}
+        <div class="tag-row">
+          {% for tag in post.tag_list %}
+            <a class="tag-chip" href="{{ url_for('by_tag', tag=tag) }}">#{{ tag }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </article>
+  {% else %}
+    <p class="empty-state">Nothing published yet. Sign in and write the first entry.</p>
+  {% endfor %}
+</section>
+{% endblock %}
